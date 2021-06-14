@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Recyclerview Firebase</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="this_is_fragment_2">This is Fragment 2</string>
+    <string name="this_is_fragment1">This is Fragment1</string>
+    <string name="question_bank">Question Bank</string>
+    <string name="notes">Notes</string>
+    <string name="syllabus">Syllabus</string>
+</resources>
