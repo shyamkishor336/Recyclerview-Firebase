@@ -44,7 +44,7 @@ Context context;
                 @Override
                 public void onClick(View view) {
                     Intent intent= new Intent(context,TabActivity.class);
-
+//shyam
                     context.startActivity(intent);
                 }
             });
