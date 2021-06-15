@@ -27,7 +27,7 @@ MyAdapter adapter;
                 new FirebaseRecyclerOptions.Builder<Model>()
                         .setQuery(FirebaseDatabase.getInstance().getReference().child("courses"), Model.class)
                         .build();
-        adapter =new  MyAdapter(options,getApplicationContext());
+        adapter =new  MyAdapter(options);
         recyclerView.setAdapter(adapter);
         adapter.startListening();
 
@@ -80,7 +80,7 @@ MyAdapter adapter;
                         .setQuery(FirebaseDatabase.getInstance().getReference().child("courses").orderByChild("name").startAt(s).endAt(s+"\uf8ff"), Model.class)
                         .build();
 
-        adapter=new MyAdapter(options, getApplicationContext());
+        adapter=new MyAdapter(options);
         adapter.startListening();
         recyclerView.setAdapter(adapter);
 

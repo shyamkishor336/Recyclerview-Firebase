@@ -1,39 +1,76 @@
 package com.recyclerview.firebase;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class TabActivity extends AppCompatActivity {
-    TabLayout tabLayout;
-    TabItem tabItem1,tabItem2,tabItem3;
-    ViewPager viewPager;
-    PageAdapter pageAdapter;
+    ViewPager collectionViewPager;
+    TabLayout collectionTabLayout;
+    String syllabus;
+    TextView txtTitle;
+    String notes;
+    String questionBank;
+    CollectionDetailAdapter collectionDetailAdapter;
+    DatabaseReference ref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab);
+        collectionViewPager = findViewById(R.id.collectionViewPager);
+        collectionTabLayout = findViewById(R.id.collection_details_tablayout);
+        txtTitle = findViewById(R.id.titleName);
+        Intent intent = getIntent();
+        String key = intent.getStringExtra("key");
+        ref = FirebaseDatabase.getInstance().getReference("courses");
+        Query query = ref.orderByKey().equalTo(key);
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    for (DataSnapshot ds: snapshot.getChildren()){
+                        txtTitle.setText(ds.child("name").getValue(String.class));
+                        syllabus = ds.child("syllabus").getValue(String.class);
+                        notes= ds.child("notes").getValue(String.class);
+                        questionBank= ds.child("questions").getValue(String.class);
 
-        tabLayout=(TabLayout)findViewById(R.id.tablayout1);
-        tabItem1=(TabItem)findViewById(R.id.tab1);
-        tabItem2=(TabItem)findViewById(R.id.tab2);
-        tabItem3=(TabItem)findViewById(R.id.tab3);
-        viewPager=(ViewPager)findViewById(R.id.vpager);
 
-        pageAdapter=new PageAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
-        viewPager.setAdapter(pageAdapter);
+                        collectionDetailAdapter = new CollectionDetailAdapter(getSupportFragmentManager(),collectionTabLayout.getTabCount(), syllabus,notes,questionBank);
+                        collectionDetailAdapter.notifyDataSetChanged();
 
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+                    }
+
+                    collectionViewPager.setAdapter(collectionDetailAdapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        query.addListenerForSingleValueEvent(eventListener);
+
+        collectionViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(collectionTabLayout));
+        collectionTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-
-                if(tab.getPosition()==0 || tab.getPosition()==1 || tab.getPosition()==2)
-                    pageAdapter.notifyDataSetChanged();
+                collectionViewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -46,8 +83,5 @@ public class TabActivity extends AppCompatActivity {
 
             }
         });
-
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        //listen for scroll or page change
     }
 }

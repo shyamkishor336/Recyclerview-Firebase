@@ -5,25 +5,34 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.tabs.TabLayout;
 
 public class MyAdapter extends FirebaseRecyclerAdapter<Model, MyAdapter.MyViewHolder> {
-Context context;
-    public MyAdapter(@NonNull  FirebaseRecyclerOptions<Model> options, Context context) {
+
+    public MyAdapter(@NonNull  FirebaseRecyclerOptions<Model> options) {
         super(options);
-        this.context = context;
+
     }
 
     @Override
     protected void onBindViewHolder(@NonNull  MyAdapter.MyViewHolder holder, int position, Model model) {
         holder.name.setText(model.getName());
 
+//        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
 
     }
 
@@ -37,17 +46,21 @@ Context context;
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView name;
+        LinearLayout linearLayout;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
-            itemView.setOnClickListener(new View.OnClickListener() {
+            Model model = new Model();
+            linearLayout = itemView.findViewById(R.id.linearLayout);
+            linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent= new Intent(context,TabActivity.class);
-
-                    context.startActivity(intent);
+                    Intent setIntent = new Intent(itemView.getContext(),TabActivity.class);
+                 //   setIntent.putExtra("key",model.getKey());
+                    itemView.getContext().startActivity(setIntent);
                 }
             });
+
         }
     }
 }

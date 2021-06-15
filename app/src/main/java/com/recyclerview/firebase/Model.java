@@ -1,17 +1,27 @@
 package com.recyclerview.firebase;
 
 public class Model {
-    String name, syllabus, notes, questions;
-Model(){
+    String name, syllabus, notes, questions, key;
 
-}
+    Model() {
+
+    }
 
 
-    public Model(String name, String syllabus, String notes, String questions) {
+    public Model(String name, String syllabus, String notes, String questions, String key) {
         this.name = name;
         this.syllabus = syllabus;
         this.notes = notes;
         this.questions = questions;
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getName() {
