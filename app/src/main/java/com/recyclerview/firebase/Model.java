@@ -7,22 +7,14 @@ public class Model {
 
     }
 
-
-    public Model(String name, String syllabus, String notes, String questions, String key) {
+    public Model(String name, String syllabus, String notes, String questions) {
         this.name = name;
         this.syllabus = syllabus;
         this.notes = notes;
         this.questions = questions;
-        this.key = key;
+
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
 
     public String getName() {
         return name;

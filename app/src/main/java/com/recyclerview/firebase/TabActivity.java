@@ -18,7 +18,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import javax.security.auth.login.LoginException;
+
+import static android.content.ContentValues.TAG;
+
 public class TabActivity extends AppCompatActivity {
+    private static final String TAG = "TabActivity";
     ViewPager collectionViewPager;
     TabLayout collectionTabLayout;
     String syllabus;
@@ -37,7 +42,10 @@ public class TabActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String key = intent.getStringExtra("key");
         ref = FirebaseDatabase.getInstance().getReference("courses");
+        Log.e(TAG, "onCreate: "+key );
+        Log.e(TAG, "onCreate: "+ref );
         Query query = ref.orderByKey().equalTo(key);
+
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
